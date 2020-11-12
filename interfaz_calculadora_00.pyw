@@ -59,15 +59,15 @@ def init_window():
     #Ponemos una progress bar
     style = ttk.Style()
     style.theme_use("default")
-    style.configure("black.Horizontal.TProgressbar", background = "#F3F118",bordercolor="black", troughcolor='#5A504E' )
+    style.configure("black.Horizontal.TProgressbar", background = "#F3F118",bordercolor="black" )
     barra_de_pogreso = Progressbar(window, length = 100, style = "black.Horizontal.TProgressbar")
+    barra_de_pogreso.grid( column = 1, row = 7)
     barra_de_pogreso["value"] = 100
-    barra_de_pogreso.grid(column = 1, row = 50)
-    barra_de_pogreso.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    
     #Ponemos un widgett de texto o Scroll text
     texto = scrolledtext.ScrolledText(window,width = 40, height = 10)
     texto.grid(column = 400, row = 200)
-    texto.insert(INSERT,"Esta calculadora tiene una progress bar,un Srolled text, y una ventana para     mensajes de error")
+    texto.insert(INSERT,"Esta calculadora tiene una progress bar,un Srolled text, y una ventana para     mensajes de error: Use + para sumar, Use - para restar, Use * para multiplicar, Use / para dividir, Use 'pow' para ejecutar una potencia, NO DIVIDA POR CERO (0), Gracias por usar mi calculadora")
     texto.config(bg = "deep sky blue")
     window.mainloop()
 def mensaje_de_error ():
@@ -98,9 +98,7 @@ def click_calcular (label, num1,num2,operador):
     res = calculadora(valor1, valor2, operador)
     #Actualización de texto en la etiqueta:
     label.configure(text = "Resultado: " + str(int(res)))
-    
-          
-                          
+
 def main():
     init_window()  
 
