@@ -5,8 +5,11 @@ from tkinter import messagebox
 from tkinter.ttk import Progressbar
 import time
 from tkinter import scrolledtext
+global window
+window = tk.Tk()
+
 def init_window():
-    window = tk.Tk() #crea la pantalla
+    #crea la pantalla
     window.resizable(False,False)
     window.title("Unidad 00")#Título de la pantalla
     window.geometry('720x480')#Dimensiones de la pantalla
@@ -62,7 +65,7 @@ def init_window():
     style.configure("black.Horizontal.TProgressbar", background = "#F3F118",bordercolor="black" )
     barra_de_pogreso = Progressbar(window, length = 100, style = "black.Horizontal.TProgressbar")
     barra_de_pogreso.grid( column = 1, row = 7)
-    barra_de_pogreso["value"] = 100
+    barra_de_pogreso["value"] = 0
     
     #Ponemos un widgett de texto o Scroll text
     texto = scrolledtext.ScrolledText(window,width = 40, height = 10)
@@ -70,6 +73,13 @@ def init_window():
     texto.insert(INSERT,"Esta calculadora tiene una progress bar,un Srolled text, y una ventana para     mensajes de error: Use + para sumar, Use - para restar, Use * para multiplicar, Use / para dividir, Use 'pow' para ejecutar una potencia, NO DIVIDA POR CERO (0), Gracias por usar mi calculadora")
     texto.config(bg = "deep sky blue")
     window.mainloop()
+def barra_llena():
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure("black.Horizontal.TProgressbar", background = "#F3F118",bordercolor="black" )
+    barra_de_pogreso = Progressbar(window, length = 100, style = "black.Horizontal.TProgressbar")
+    barra_de_pogreso.grid( column = 1, row = 7)
+    barra_de_pogreso["value"] = 100
 def mensaje_de_error ():
     messagebox.showerror('Ha ocurrido un error', "No puedes dividir entre 0, es inválido!")
 
@@ -98,7 +108,7 @@ def click_calcular (label, num1,num2,operador):
     res = calculadora(valor1, valor2, operador)
     #Actualización de texto en la etiqueta:
     label.configure(text = "Resultado: " + str(int(res)))
-
+    barra_llena()
 def main():
     init_window()  
 
