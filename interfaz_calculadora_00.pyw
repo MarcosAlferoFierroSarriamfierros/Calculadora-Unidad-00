@@ -1,18 +1,26 @@
+from tkinter import *
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
+from tkinter.ttk import Progressbar
+import time
+from tkinter import scrolledtext
 def init_window():
     window = tk.Tk() #crea la pantalla
-    window.title("Calculadora unidad 00")#Título de la pantalla
-    window.geometry('400x250')#Dimensiones de la pantalla
+    window.resizable(False,False)
+    window.title("Unidad 00")#Título de la pantalla
+    window.geometry('720x480')#Dimensiones de la pantalla
     #Texto principal o título, con sus posibles configuraciones, fuente y tamaño 
-    label = tk.Label(window, text = "CALCULADORA", font = ("Arial bold", 15))
+    label = tk.Label(window, text = "", font = ("Arial bold", 15))
     label.grid(column = 0, row = 0) #Define el lugar donde estará la etiqueta
+    window.config( bg = "#BF00FF")
     #Seleccione los campos de texto
     label_entrada1 = tk.Label(window,text = "Ingrese el primer número", font = ("Arial bold", 10))
     label_entrada1.grid(column = 0, row = 1)
-    
+    label_entrada1.config(bg = "#32CD32")
     label_entrada2 = tk.Label(window,text = "Ingrese el primer número", font = ("Arial bold", 10))
     label_entrada2.grid(column = 0, row = 2)
+    label_entrada2.config( bg = "green" )
     
     entrada1 = tk.Entry(window, width = 10)
     entrada2 = tk.Entry(window, width = 10)
@@ -26,6 +34,7 @@ def init_window():
     #Crear una etiqueta para el seleccionador(combox)
     label_operador = tk.Label(window , text = "Escoja un operador" , font = ("Arial bold", 10))
     label_operador.grid(column = 0, row = 3)
+    label_operador.config(bg = "#90EE90")
     #Crear un seleccionador (combobox):
     combo_operadores = ttk.Combobox(window)
     #Asignar los valores del seleccionador a traves de su atributo values:
@@ -33,7 +42,7 @@ def init_window():
     #Asignar por defecto una opcion seleccionada: 0 es el índice de los valores:
     combo_operadores.current(0) # selecciona el item
     #Ubicar el seleccionador:
-    combo_operadores.grid(column  =1, row = 3)
+    combo_operadores.grid(column  = 1, row = 3)
     #Agregar etiqueta para mostrar el resultado de la operacion en pantalla:
     label_resultado = tk.Label(window, text = "Resultado: ", font = ("Arial bold" , 15))
     label_resultado.grid(column = 0, row = 5)
@@ -43,10 +52,27 @@ def init_window():
                             entrada2.get(),
                             combo_operadores.get()),
                     text = "calcular",
-                    bg = "purple",
-                    fg = "green")
+                    bg = "green",
+                    fg = "yellow")
     boton.grid(column = 1, row =  4)      
+    label.config(bg = "green")
+    #Ponemos una progress bar
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure("black.Horizontal.TProgressbar", background = "#F3F118",bordercolor="black", troughcolor='#5A504E' )
+    barra_de_pogreso = Progressbar(window, length = 100, style = "black.Horizontal.TProgressbar")
+    barra_de_pogreso["value"] = 100
+    barra_de_pogreso.grid(column = 1, row = 50)
+    barra_de_pogreso.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    #Ponemos un widgett de texto o Scroll text
+    texto = scrolledtext.ScrolledText(window,width = 40, height = 10)
+    texto.grid(column = 400, row = 200)
+    texto.insert(INSERT,"Esta calculadora tiene una progress bar,un Srolled text, y una ventana para     mensajes de error")
+    texto.config(bg = "deep sky blue")
     window.mainloop()
+def mensaje_de_error ():
+    messagebox.showerror('Ha ocurrido un error', "No puedes dividir entre 0, es inválido!")
+
 def calculadora(num1, num2, operador):
     if operador == "+":
         resultado = num1 + num2      
@@ -55,7 +81,11 @@ def calculadora(num1, num2, operador):
     elif operador == "*":
         resultado = num1 * num2
     elif operador == "/":
-        resultado = num1 / num2
+        if num2 == 0:
+            mensaje_de_error()        
+        else:
+            resultado = num1 / num2
+    
     else:
         resultado = num1 ** num2
     
@@ -68,6 +98,10 @@ def click_calcular (label, num1,num2,operador):
     res = calculadora(valor1, valor2, operador)
     #Actualización de texto en la etiqueta:
     label.configure(text = "Resultado: " + str(int(res)))
-
-init_window()                
+    
+          
                           
+def main():
+    init_window()  
+
+main()
